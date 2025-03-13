@@ -5,7 +5,7 @@
 
 moveo_moveit::ArmJointState arm_steps;
 moveo_moveit::ArmJointState total;
-int stepsPerRevolution[6] = {32800,18000,72000,3280,14400,0};  // microsteps/revolution (using 16ths) from observation, for each motor
+int stepsPerRevolution[6] = {3200,3200,400,200,200,0};  // microsteps/revolution (using 16ths) from observation, for each motor
 int joint_status = 0;
 double cur_angle[6];
 int joint_step[6];

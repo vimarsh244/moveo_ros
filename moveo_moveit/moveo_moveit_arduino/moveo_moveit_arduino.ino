@@ -57,11 +57,21 @@
 #define E0_DIR_PIN         28
 #define E0_ENABLE_PIN      24
 
-AccelStepper joint1(1,E1_STEP_PIN, E1_DIR_PIN);
-AccelStepper joint2(1,Z_STEP_PIN, Z_DIR_PIN);
-AccelStepper joint3(1,Y_STEP_PIN, Y_DIR_PIN);
-AccelStepper joint4(1,X_STEP_PIN, X_DIR_PIN);
-AccelStepper joint5(1, E0_STEP_PIN, E0_DIR_PIN);
+// AccelStepper joint1(1,E1_STEP_PIN, E1_DIR_PIN);
+// AccelStepper joint2(1,Z_STEP_PIN, Z_DIR_PIN);
+// AccelStepper joint3(1,Y_STEP_PIN, Y_DIR_PIN);
+// AccelStepper joint4(1,X_STEP_PIN, X_DIR_PIN);
+// AccelStepper joint5(1, E0_STEP_PIN, E0_DIR_PIN);
+
+
+AccelStepper joint1(1,7, 40);
+AccelStepper joint2(1,3, 32);
+AccelStepper joint3(1,4, 34);
+AccelStepper joint4(1,5, 36);
+AccelStepper joint5(1,6, 38);
+
+const int enablePins[5] = {41,33,35,37,39};
+
 
 Servo gripper;
 MultiStepper steppers;
@@ -73,7 +83,7 @@ ros::NodeHandle nh;
 std_msgs::Int16 msg;
 
 //instantiate publisher (for debugging purposes)
-//ros::Publisher steps("joint_steps_feedback",&msg);
+// ros::Publisher steps("joint_steps_feedback",&msg);
 
 void arm_cb(const moveo_moveit::ArmJointState& arm_steps){
   joint_status = 1;
@@ -120,6 +130,17 @@ void setup() {
   steppers.addStepper(joint4);
   steppers.addStepper(joint5);
 
+
+  // MANUally enabling the motors
+    for (int i = 0; i < 5; i++) 
+  {
+    pinMode(enablePins[i], OUTPUT);         
+    digitalWrite(enablePins[i], 0);  
+  }
+  // digitalWrite(enablePins[2], 0);
+  // digitalWrite(enablePins[3], 0);
+  digitalWrite(enablePins[4], 1);
+
   // Configure gripper servo
   gripper.attach(11);
   
@@ -131,14 +152,14 @@ void loop() {
   { 
     long positions[5];  // Array of desired stepper positions must be long
     positions[0] = joint_step[0]; // negated since the real robot rotates in the opposite direction as ROS
-    positions[1] = -joint_step[1]; 
+    positions[1] = joint_step[1]; 
     positions[2] = joint_step[2]; 
     positions[3] = joint_step[3]; 
     positions[4] = -joint_step[4]; 
 
     // Publish back to ros to check if everything's correct
-    //msg.data=positions[4];
-    //steps.publish(&msg);
+    // msg.data=positions[4];
+    // steps.publish(&msg);
 
     steppers.moveTo(positions);
     nh.spinOnce();
