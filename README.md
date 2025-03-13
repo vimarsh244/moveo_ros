@@ -1,4 +1,21 @@
 # moveo_ros
+
+- Changes made such that it should work on ros1 noetic correctly
+- also changes according to microsteps for it work
+
+note: follow the ros_lib build changes for the arduino code
+
+
+Some ideas todo:
+
+- add mujuco bindings
+- train using this urdf using isaac gym / mujuco playground
+- pick and place
+- occluded vision arm work
+
+below readme by [jesseweisberg](https://github.com/jesseweisberg/moveo_ros)
+--- 
+
 ROS packages that can be used to plan and execute motion trajectories for the BCN3D Moveo robotic arm in simulation and real-life.
 ### [Video Demo Here!](https://youtu.be/2RcTTqs17O8)
 
